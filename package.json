@@ -1,0 +1,29 @@
+{
+  "name": "pubsub-subscriber",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "lol not really"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/namshi/node-pubsub-subscriber.git"
+  },
+  "keywords": [
+    "gcp",
+    "pubsub",
+    "google",
+    "cloud"
+  ],
+  "author": "alex nadalin <alessandro.nadalin@namshi.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/namshi/node-pubsub-subscriber/issues"
+  },
+  "homepage": "https://github.com/namshi/node-pubsub-subscriber#readme",
+  "dependencies": {
+    "@google-cloud/pubsub": "^0.28.1",
+    "lib-logger": "^1.0.3"
+  }
+}
