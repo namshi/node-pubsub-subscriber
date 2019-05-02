@@ -6,6 +6,7 @@ async function subscribe(topic_name, subscription_name, subscriber) {
     try {
       logger.info(`Creating subscription ${subscription_name} on topic ${topic_name}`)
       await pubsub.topic(topic_name).createSubscription(subscription_name);
+      logger.info(`Subscription ${subscription_name} on topic ${topic_name} created successfully`)
     } catch(err) {
       if (err.code === 6) {
         logger.info(`subscription ${subscription_name} already exist, skipping creating it...`)
