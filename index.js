@@ -10,6 +10,8 @@ async function subscribe(topic_name, subscription_name, subscriber) {
     } catch(err) {
       if (err.code === 6) {
         logger.info(`subscription ${subscription_name} already exist, skipping creating it...`)
+      } else {
+          throw err;
       }
     }
   
