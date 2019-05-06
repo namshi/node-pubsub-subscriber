@@ -33,7 +33,7 @@ async function subscribe(topic_name, subscription_name, subscriber) {
           message.ack();
           return;
         }
-        await subscriber(payload);
+        await subscriber(payload, { message, topic_name});
         message.ack();
         logger.info(`ack ${data.toString("utf8")}`);
       } catch (e) {
