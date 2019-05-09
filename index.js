@@ -33,9 +33,9 @@ async function subscribe(topic_name, subscription_name, subscriber) {
           message.ack();
           return;
         }
-        await subscriber(payload, { message, topic_name});
+        await subscriber(payload, { message, topic_name });
         message.ack();
-        logger.info(`ack ${data.toString("utf8")}`);
+        logger.info(payload);
       } catch (e) {
         logger.error(`error processing: ${data.toString("utf8")} - ${e.message}`);
         message.nack();
