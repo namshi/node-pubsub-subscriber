@@ -17,10 +17,13 @@ let subscription = "my_topic_send_email"
 // payload will be the JSON parsed.
 // 
 // Return to ack, throw an exception to nack.
-async function onMessage(payload) {
+async function onMessage(payload, options) {
     if (payload.ok) {
         return
     }
+    
+    // options.message - the original message object from the pubsub SDK
+    // options.topic_name - the topic you've subscribed to
 
     throw new Error("I f'ed up")
 }
