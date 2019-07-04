@@ -3,18 +3,6 @@ const logger = require("lib-logger");
 
 async function subscribe(topic_name, subscription_name, subscriber, options) {
   const pubsub = new PubSub();
-  try {
-    logger.info(`Creating subscription ${subscription_name} on topic ${topic_name}`)
-    await pubsub.topic(topic_name).createSubscription(subscription_name);
-    logger.info(`Subscription ${subscription_name} on topic ${topic_name} created successfully`)
-  } catch(err) {
-    if (err.code === 6) {
-      logger.info(`subscription ${subscription_name} already exist, skipping creating it...`)
-    } else {
-        throw err;
-    }
-  }
-
   // Default subscriber options
   // Documentation here https://cloud.google.com/pubsub/docs/pull#config
   const defaultOptions = {
@@ -23,7 +11,15 @@ async function subscribe(topic_name, subscription_name, subscriber, options) {
     },
   };
 
-  const subscription = pubsub.subscription(subscription_name, options || defaultOptions);
+  const topic = pubsub.topic(topic_name);
+  const subscription = topic.subscription(subscription_name, options || defaultOptions);
+  const [exists] = await subscription.exists();
+
+  if (!exists) {
+    logger.info(`Creating subscription ${subscription_name} on topic ${topic_name}`);
+    await subscription.create();
+    logger.info(`Subscription ${subscription_name} on topic ${topic_name} created successfully`);
+  }
 
   logger.info(`Listening...`);
   subscription.on(`message`, async function processMessage(message) {
@@ -48,7 +44,7 @@ async function subscribe(topic_name, subscription_name, subscriber, options) {
 }
 
 module.exports = {
-    subscribe
+  subscribe
 }
 
 process.on('unhandledRejection', err => { throw err })
