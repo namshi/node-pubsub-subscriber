@@ -1,7 +1,7 @@
 const { PubSub } = require("@google-cloud/pubsub");
 const logger = require("lib-logger");
 
-async function subscribe(topic_name, subscription_name, subscriber) {    
+async function subscribe(topic_name, subscription_name, subscriber, opts = {}) {
   const pubsub = new PubSub();
   try {
     logger.info(`Creating subscription ${subscription_name} on topic ${topic_name}`)
@@ -23,7 +23,12 @@ async function subscribe(topic_name, subscription_name, subscriber) {
 
   logger.info(`Listening...`);
   subscription.on(`message`, async function processMessage(message) {
-    const { data } = message;
+    const { data, publishTime, received } = message;
+    const { delay = 0 } = opts;
+
+    if (delay && (received / 1000 - publishTime.getFullTimeString() / 1000000000) < delay) {
+      message.nack(delay);
+    }
     try {
       let payload = {};
       try {
