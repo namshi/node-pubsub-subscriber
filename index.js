@@ -1,7 +1,7 @@
 const { PubSub } = require("@google-cloud/pubsub");
 const logger = require("lib-logger");
 
-async function subscribe(topic_name, subscription_name, subscriber) {    
+async function subscribe(topic_name, subscription_name, subscriber, options) {
   const pubsub = new PubSub();
   try {
     logger.info(`Creating subscription ${subscription_name} on topic ${topic_name}`)
@@ -15,11 +15,15 @@ async function subscribe(topic_name, subscription_name, subscriber) {
     }
   }
 
-  const subscription = pubsub.subscription(subscription_name, {
+  // Default subscriber options
+  // Documentation here https://cloud.google.com/pubsub/docs/pull#config
+  const defaultOptions = {
     flowControl: {
       maxMessages: 10,
     },
-  });
+  };
+
+  const subscription = pubsub.subscription(subscription_name, options || defaultOptions);
 
   logger.info(`Listening...`);
   subscription.on(`message`, async function processMessage(message) {
