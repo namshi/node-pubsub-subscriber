@@ -13,12 +13,18 @@ async function subscribe(topic_name, subscription_name, subscriber, options) {
 
   const topic = pubsub.topic(topic_name);
   const subscription = topic.subscription(subscription_name, options || defaultOptions);
-  const [exists] = await subscription.exists();
 
-  if (!exists) {
-    logger.info(`Creating subscription ${subscription_name} on topic ${topic_name}`);
-    await subscription.create();
-    logger.info(`Subscription ${subscription_name} on topic ${topic_name} created successfully`);
+  try {
+    const [exists] = await subscription.exists();
+    if (!exists) {
+      logger.info(`Creating subscription ${subscription_name} on topic ${topic_name}`);
+      await subscription.create();
+      logger.info(`Subscription ${subscription_name} on topic ${topic_name} created successfully`);
+    }
+  } catch(err) {
+    logger.error(`Error checking subscription exists or creating subscription`, err);
+    message.nack();
+    return;
   }
 
   logger.info(`Listening...`);
