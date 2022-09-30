@@ -1,6 +1,6 @@
 {
   "name": "pubsub-subscriber",
-  "version": "1.4.2",
+  "version": "1.4.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/namshi/node-pubsub-subscriber#readme",
   "dependencies": {
-    "@google-cloud/pubsub": "^0.29.1",
-    "lib-logger": "^1.0.3"
+    "@google-cloud/pubsub": "^3.2.0",
+    "lib-logger": "^2.0.5"
   }
 }
